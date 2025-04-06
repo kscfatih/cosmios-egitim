@@ -43,7 +43,16 @@ class CategorySerializer(serializers.Serializer):
 
 
 class ProductSerializer(serializers.ModelSerializer):
-    category = CategorySerializer()
+    category = serializers.HyperlinkedRelatedField(
+        read_only=True,
+        view_name = 'category-detail'
+    )
     class Meta:
         model = Product
+        fields = '__all__'
+
+class CategoryModelSerializer(serializers.ModelSerializer):
+    products = ProductSerializer(many=True, read_only=True)
+    class Meta:
+        model = Category
         fields = '__all__'

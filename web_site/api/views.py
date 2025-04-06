@@ -1,9 +1,11 @@
 from rest_framework.views import APIView
 from web_site.models import Category, Product
 from rest_framework.response import Response
-from .serializer import CategorySerializer, ProductSerializer, ProductSerializer_
+from .serializer import CategorySerializer, ProductSerializer, ProductSerializer_, CategoryModelSerializer
 from rest_framework import status
 from rest_framework.decorators import api_view
+from rest_framework import generics
+from rest_framework.viewsets import ModelViewSet
 
 @api_view(['GET','POST'])
 def products_api_view(request):
@@ -78,3 +80,30 @@ class CategoryApiView(APIView):
             return category
         except:
             return Response('Belirtilen id\'de bir kayıt bulunamadı ! ', status=status.HTTP_204_NO_CONTENT)
+        
+class CategoryGenericViewListCreate(generics.ListCreateAPIView):
+    serializer_class = CategoryModelSerializer
+
+    def get_queryset(self):
+        print(self.request.user)
+        return Category.objects.filter(status=True)
+
+class CategoryGenericView(generics.RetrieveUpdateDestroyAPIView):
+    queryset=Category.objects.filter(status=True)
+    serializer_class = CategoryModelSerializer
+
+class CategoryDeleteView(generics.DestroyAPIView):
+    queryset = Category.objects.filter(status=True)
+    serializer_class = CategoryModelSerializer
+
+class CategoryUpdateView(generics.UpdateAPIView):
+    queryset = Category.objects.filter(status=True)
+    serializer_class = CategoryModelSerializer
+
+class CategoryModelViewSet(ModelViewSet):
+    queryset = Category.objects.all()
+    serializer_class = CategoryModelSerializer
+
+class ProductModelViewSet(ModelViewSet):
+    queryset = Product.objects.filter(status=True)
+    serializer_class = ProductSerializer
