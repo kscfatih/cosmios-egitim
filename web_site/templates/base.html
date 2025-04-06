@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="tr">
+    <head>
+       <title> {% block title %}{% endblock title %} </title>
+       {% include "inc/head.html" %}
+    </head>
+<body class="dark-scheme">
+    <div id="wrapper">
+        <div id="preloader">
+            <div class="preloader1"></div>
+        </div>  
+        <!-- header begin -->
+        {% include "inc/header.html" %}
+        <!-- header close -->
+        <div class="no-bottom no-top" id="content">
+            <div id="top"></div>
+           
+            {% block content %}{% endblock content %}
+        </div>
+
+         <!-- footer begin -->
+         {% include "inc/footer.html" %}
+        <!-- footer close -->
+         {% include "inc/script.html" %}
+    </div>
+</body>
+</html>

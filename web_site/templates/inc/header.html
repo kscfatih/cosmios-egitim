@@ -1,0 +1,43 @@
+{% load static %}
+<header class="transparent">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="de-flex sm-pt10">
+                    <div class="de-flex-col">
+                        <div class="de-flex-col">
+                            <!-- logo begin -->
+                            <div id="logo">
+                                <a href="{% url "home" %}">
+                                    <img alt="" src="{% static "web_site/images/logo.png" %}" />
+                                </a>
+                            </div>
+                            <!-- logo close -->
+                        </div>
+                        <div class="de-flex-col">
+                        </div>
+                    </div>
+                    <div class="de-flex-col header-col-mid">
+                        <!-- mainmenu -->
+                        <ul id="mainmenu">
+                            <li><a href="{% url "home" %}">Ana Sayfa</a>
+                             
+                            </li>
+                            <li><a href="{% url "menu" %}">Menü</a>
+                            </li>
+                            
+                            <li><a href="{% url "contact" %}">İletişim</a></li>
+                        </ul>
+                        <!-- mainmenu -->
+                    </div>
+                    <div class="de-flex-col">
+                        <div class="menu_side_area">
+                            <a href="{% url "reservation" %}" class="btn-main sm-hide">Rezervasyon</a>
+                            <span id="menu-btn"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>

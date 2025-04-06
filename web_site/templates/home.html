@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Ana Sayfa{% endblock title %}
+
+{% block content %}
+
+<section id="section-hero" class="no-top no-bottom full-height text-light jarallax" aria-label="section" data-video-src="mp4:video/local-video.mp4,webm:video/local-video.webm,ogv:video/local-video.ogv" style="z-index: 0; min-height: 738px; background-size: cover;">
+    <div class="container position-relative z1000" style="background-size: cover;">
+        <div class="row align-items-center" style="background-size: cover;">
+            <div class="col-lg-6 offset-lg-1 mb-sm-30" style="background-size: cover;">
+                <div class="de-title-2" style="background-size: cover;">
+                    <h3 class="id-color wow fadeInUp  animated" data-wow-delay=".3s" style="visibility: visible; animation-delay: 0.3s; animation-name: fadeInUp;"> {{setting.home_header_big_text_1}} </h3>
+                    <h1 class="s1 wow fadeInUp animated" data-wow-delay=".6s" style="visibility: visible; animation-delay: 0.6s; animation-name: fadeInUp;"> {{settings.home_header_big_text}} </h1>
+                    <a href="{{settings.home_header_button_link}}" class="btn-border wow fadeInUp animated" data-wow-delay="1.1s" style="visibility: visible; animation-delay: 1.1s; animation-name: fadeInUp;"> {{settings.home_header_button}} </a>
+                </div>
+            </div>
+            <div class="col-lg-4" style="background-size: cover;">
+                <p class="wow fadeInRight animated" data-wow-delay="1s" style="visibility: visible; animation-delay: 1s; animation-name: fadeInRight;">{{settings.home_header_text}}</p>
+            </div>
+        </div>
+    </div>
+    <a href="#section-gallery" class="mouse-s1 mouse-icon-click scroll-to wow fadeInUp animated" data-wow-delay="2s" style="visibility: visible; animation-delay: 2s; animation-name: fadeInUp;">
+        <span class="mouse fadeScroll relative" data-scroll-speed="2" style="transform: translateY(0px); opacity: 1;">
+            <span class="scroll"></span>
+        </span>
+    </a>
+<div id="jarallax-container-0" style="position: absolute; top: 0px; left: 0px; width: 100%; height: 100%; overflow: hidden; z-index: -100; clip-path: polygon(0px 0px, 100% 0px, 100% 100%, 0px 100%); background-size: cover;"><div style="background-position: 50% 50%; background-size: cover; background-repeat: no-repeat; background-image: none; position: absolute; top: 0px; left: 0px; width: 1173.6px; height: 738px; overflow: hidden; pointer-events: none; transform-style: preserve-3d; backface-visibility: hidden; will-change: transform, opacity; margin-top: 0px; transform: translate3d(0px, 0px, 0px);"></div><video loop="" playsinline="" webkit-playsinline="" tabindex="-1" aria-hidden="true" id="VideoWorker-0" poster="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" style="position: absolute; inset: 0px; width: 100%; height: 100%; max-width: none; max-height: none; pointer-events: none; transform-style: preserve-3d; backface-visibility: hidden; will-change: transform, opacity; margin: 0px; z-index: -1;"><source src="video/local-video.mp4" type="video/mp4"><source src="video/local-video.webm" type="video/webm"><source src="video/local-video.ogv" type="video/ogg"></video></div>
+</section>
+
+<section id="section-about" style="background-size: cover;">
+    <div class="container" style="background-size: cover;">
+        <div class="row g-4 text-center" style="background-size: cover;">
+
+            <div class="col-md-4 wow fadeInRight animated" style="background-size: cover; visibility: visible; animation-name: fadeInRight;">
+                <img src="{% static "web_site/images/misc/icon-1.png" %}" alt="">
+                <div class="spacer-single" style="background-size: cover;"></div>
+                <h3>Aromatic Taste</h3>
+                <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo.</p>
+                <a href="#" class="btn-border">Read More</a>
+            </div>
+
+            <div class="col-md-4 wow fadeInRight animated" data-wow-delay=".1s" style="background-size: cover; visibility: visible; animation-delay: 0.1s; animation-name: fadeInRight;">
+                <img src="images/misc/icon-2.png" alt="">
+                <div class="spacer-single" style="background-size: cover;"></div>
+                <h3>Delicious Foods</h3>
+                <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo.</p>
+                <a href="#" class="btn-border">Read More</a>
+            </div>
+
+            <div class="col-md-4 wow fadeInRight animated" data-wow-delay=".2s" style="background-size: cover; visibility: visible; animation-delay: 0.2s; animation-name: fadeInRight;">
+                <img src="images/misc/icon-3.png" alt="">
+                <div class="spacer-single" style="background-size: cover;"></div>
+                <h3>Make Your Party</h3>
+                <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo.</p>
+                <a href="#" class="btn-border">Read More</a>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+{% endblock content %}

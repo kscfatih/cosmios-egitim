@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Menü{% endblock title %}
+
+{% block content %}
+<section id="section-drinks" aria-label="section" class="jarallax" style="z-index: 0; background-size: cover;">
+                
+    <div class="container" style="background-size: cover;">
+        <div class="row align-items-center" style="background-size: cover;">
+            <div class="col-md-6 offset-md-3 text-center" style="background-size: cover;">
+                <div class="de-title" style="background-size: cover;">
+                    <div class="spacer-single" style="background-size: cover;"></div>
+                    <h5 class="s1 wow fadeInUp animated" data-wow-delay=".5s" style="visibility: visible; animation-delay: 0.5s; animation-name: fadeInUp;"><span class="id-color-2">Menü</span></h5>
+                    <h2 class="wow fadeInUp animated" data-wow-delay=".75s" style="visibility: visible; animation-delay: 0.75s; animation-name: fadeInUp;">İçecekler</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+<div id="jarallax-container-0" style="position: absolute; top: 0px; left: 0px; width: 100%; height: 100%; overflow: hidden; z-index: -100; clip-path: polygon(0px 0px, 100% 0px, 100% 100%, 0px 100%); background-size: cover;"><img class="jarallax-img" src="{% static "web_site/images/background/1.jpg" %}" alt="" style="object-fit: cover; object-position: 50% 50%; max-width: none; position: absolute; top: 0px; left: 0px; width: 726.4px; height: 553.6px; overflow: hidden; pointer-events: none; transform-style: preserve-3d; backface-visibility: hidden; will-change: transform, opacity; margin-top: 92.2px; transform: translate3d(0px, -137.2px, 0px);"></div></section>
+<section id="section-drinks-menu" aria-label="section" style="background-size: cover;">
+    <div class="container" style="background-size: cover;">
+        <div class="row g-5 masonry" style="position: relative; height: 1385.4px; background-size: cover;">
+            
+            {% for category in categories  %}
+            <div class="col-md-12 col-sm-12 col-xs-12 item" style="position: absolute; left: 0px; top: 0px; background-size: cover;">
+                <div class="menu-wrap" style="background-size: cover;">
+                    <div class="menu-item thead" style="background-size: cover;">
+                        <div class="c1" style="background-size: cover;"> {{category.name}} </div>
+                        <div class="c2" style="background-size: cover;">Orta<span>16 gr</span></div>
+                        <div class="c3" style="background-size: cover;">Büyük<span>20 gr</span></div>
+                    </div>
+
+                    {% for product in category.products.all %}
+                    <div class="menu-item" style="background-size: cover;">
+                        <div class="c1" style="background-size: cover;"> {{product.name}} <i class="fa fa-thumbs-up" title="recommend"></i></div>
+                        <div class="c2" style="background-size: cover;"><span class="cur">$</span> {{product.m_price}} </div>
+                        <div class="c3" style="background-size: cover;"><span class="cur">$</span>{{product.l_price}}</div>
+                    </div>
+
+                    {% endfor %}
+                </div>
+            </div>
+            {% endfor %}
+            
+        </div>
+    </div>
+</section>
+{% endblock content %}
