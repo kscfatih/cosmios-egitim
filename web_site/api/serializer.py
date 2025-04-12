@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from web_site.models import Category, Product
+from web_site.models import Category, Product, Contact, Reservation
 
 
 
@@ -55,4 +55,40 @@ class CategoryModelSerializer(serializers.ModelSerializer):
     products = ProductSerializer(many=True, read_only=True)
     class Meta:
         model = Category
+        fields = '__all__'
+
+class ContactSerializer(serializers.Serializer):
+    id = serializers.IntegerField(read_only=True)
+    name = serializers.CharField(max_length=30)
+    email = serializers.EmailField()
+    phone = serializers.CharField(max_length=11)
+    message = serializers.CharField()
+    created_date = serializers.DateTimeField(read_only=True)
+    updated_date = serializers.DateTimeField(read_only=True)
+    status = serializers.BooleanField(default=True)
+
+    def validate_message(self, value):
+        if len(value) < 10:
+            raise serializers.ValidationError('Mesajınız 10 karakterden küçük olmamalıdır')
+
+    def validate_phone(self, value):
+        if value[0] != '0':
+            raise serializers.ValidationError('Telefon numarası 0 ile başlamalı')
+
+
+    def create(self, validated_data):
+        return Contact.objects.create(**validated_data)
+    
+    def update(self, instance, validated_data):
+        instance.name = validated_data.get('name', instance.name)
+        instance.email = validated_data.get('email', instance.email)
+        instance.phone = validated_data.get('phone', instance.phone)
+        instance.message = validated_data.get('message', instance.message)
+        instance.status = validated_data.get('status', instance.status)
+        instance.save()
+        return instance
+    
+class ReservationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Reservation
         fields = '__all__'

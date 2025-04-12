@@ -5,6 +5,7 @@ from rest_framework.routers import DefaultRouter
 router = DefaultRouter()
 router.register(r'categories',CategoryModelViewSet, basename='category')
 router.register(r'products',ProductModelViewSet, basename='product')
+router.register(r'reservations', ReservationViewset, basename='reservation')
 
 
 urlpatterns = [
@@ -16,6 +17,8 @@ urlpatterns = [
     path('category-generic/<int:pk>', CategoryGenericView.as_view(), name='category-detail'),
     path('delete-category/<int:pk>', CategoryDeleteView.as_view(), name='category-delete'),
     path('update-category/<int:pk>', CategoryUpdateView.as_view(), name='update-category'),
+    path('contacts', ContactApiView.as_view(), name='contacts-api'),
+    path('contacts/<int:id>', ContactApiView.as_view(), name='contacts-api'),
     path('router/', include(router.urls))
     
 ]

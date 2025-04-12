@@ -1,13 +1,16 @@
 from rest_framework.views import APIView
-from web_site.models import Category, Product
+from web_site.models import Category, Product, Contact, Reservation
 from rest_framework.response import Response
-from .serializer import CategorySerializer, ProductSerializer, ProductSerializer_, CategoryModelSerializer
+from .serializer import *
 from rest_framework import status
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework import generics
 from rest_framework.viewsets import ModelViewSet
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly,MyPermission
+
 
 @api_view(['GET','POST'])
+@permission_classes([MyPermission])
 def products_api_view(request):
     if request.method == 'POST':
         serializer = ProductSerializer_(data=request.data)
@@ -107,3 +110,48 @@ class CategoryModelViewSet(ModelViewSet):
 class ProductModelViewSet(ModelViewSet):
     queryset = Product.objects.filter(status=True)
     serializer_class = ProductSerializer
+
+
+class ContactApiView(APIView):
+    permission_classes=[IsAuthenticatedOrReadOnly]
+    def get(self, request, id=None):
+        if id:
+            contact = Contact.objects.get(id=id)
+            serializer = ContactSerializer(contact)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            contacts = Contact.objects.filter(status=True)
+            serializers = ContactSerializer(contacts, many=True)
+            return Response(serializers.data, status=status.HTTP_200_OK)
+        
+    def post(self, request):
+        serializer = ContactSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+    def put(self, request, id=None):
+        if id:
+            contact = Contact.objects.get(id=id)
+        else:
+            contact = Contact.objects.get(id=request.data['id'])
+        
+        serializer = ContactSerializer(contact, data=request.data)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+    def delete(self, request, id):
+        contact = Contact.objects.get(id=id)
+        contact.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    
+class ReservationViewset(ModelViewSet):
+    queryset = Reservation.objects.filter(status=True)
+    serializer_class = ReservationSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
