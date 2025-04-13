@@ -6,11 +6,35 @@ from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework import generics
 from rest_framework.viewsets import ModelViewSet
-from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly,MyPermission
+from rest_framework.pagination import PageNumberPagination
+from rest_framework.permissions import (
+    IsAuthenticated, 
+    IsAuthenticatedOrReadOnly,
+    AllowAny, 
+    BasePermission,
+    SAFE_METHODS)
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters
+
+class ReadOnly(BasePermission):
+    def has_permission(self, request, view):
+        return bool(request.method in SAFE_METHODS)
+
+class MyPagination(PageNumberPagination):
+    page_size = 5
+    page_query_param = 'sayfa'
+
+    def get_paginated_response(self, data):
+        return Response({
+            'Toplam Obje': self.page.paginator.count,
+            'Sonraki Sayfa': self.get_next_link(),
+            'Önceki Sayfa': self.get_previous_link(),
+            'Objeler': data,
+        })
 
 
 @api_view(['GET','POST'])
-@permission_classes([MyPermission])
+@permission_classes([ReadOnly])
 def products_api_view(request):
     if request.method == 'POST':
         serializer = ProductSerializer_(data=request.data)
@@ -25,6 +49,7 @@ def products_api_view(request):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 class ProductApiView(APIView):
+    
     def get(self, request):
         products = Product.objects.filter(status=True)
         serializer = ProductSerializer(products, many=True)
@@ -46,7 +71,16 @@ class CategoryApiView(APIView):
             serializer = CategorySerializer(category)
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:
-            categories = Category.objects.filter(status=True)
+            categories = Category.objects.all()
+            status_ = request.GET.get('status')
+            if status_:
+                if status_ == 'false':
+                    s = False
+                elif status_ == 'true':
+                    s = True
+            else:
+                s = True
+            categories = categories.filter(status=s)
             serializer = CategorySerializer(categories, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
     
@@ -63,6 +97,8 @@ class CategoryApiView(APIView):
         category = self.get_category(id)
         
         serializer = CategorySerializer(category, data=request.data)
+
+        
 
         if serializer.is_valid():
             serializer.save()
@@ -106,11 +142,33 @@ class CategoryUpdateView(generics.UpdateAPIView):
 class CategoryModelViewSet(ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategoryModelSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['name','status']
 
 class ProductModelViewSet(ModelViewSet):
-    queryset = Product.objects.filter(status=True)
     serializer_class = ProductSerializer
+    pagination_class = MyPagination
+    filter_backends = [filters.OrderingFilter]
+    ordering_fields  = ['name','m_price','l_price','created_date']
 
+    def get_queryset(self):
+        print(self.request.GET)
+        status = self.request.GET.get('status')
+        name = self.request.GET.get('name')
+        queryset = Product.objects.all()
+        if status:
+            if status == 'false':
+                s = False
+            elif status == 'true':
+                s = True
+        else:
+            s = True
+        queryset = queryset.filter(status = s)
+
+        if name:
+            queryset = queryset.filter(name=name)
+
+        return queryset
 
 class ContactApiView(APIView):
     permission_classes=[IsAuthenticatedOrReadOnly]
